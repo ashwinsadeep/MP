@@ -1,0 +1,5 @@
+{
+  "app_name": "zeus",
+  "app_display_name": "Zeus",
+  "log_directory": "/vagrant/log/zeus"
+}
