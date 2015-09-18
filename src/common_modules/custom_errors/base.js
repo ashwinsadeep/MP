@@ -1,9 +1,10 @@
 (function (module) {
 
-    var BaseError = function (msg) {
+    var BaseError = function (msg, data) {
         this._msg = msg;
         this._errorCode = 1001;
         this._isLoggable = false;
+        this._data = data;
     };
 
     BaseError.prototype.getMessage = function () {

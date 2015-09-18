@@ -34,9 +34,16 @@
         var accessLogStream = fs.createWriteStream(accessLogPath, {flags: 'a'});
         self._app.use(morgan(self._getAccessLogFormat(), {stream: accessLogStream}));
 
+        // Setup template engine & view renderer
+        self._app.set('views', __dirname + '/views/web');
+        self._app.set('view engine', 'jade');
+
         self._app.use(expressDomainMiddleware); // domains middleware will attach a domain to each request
         self._app.use(bodyParser.json()); // read json input in post
         self._app.use(bodyParser.urlencoded({extended: true})); // read url encoded form data
+
+        self._app.use('/static', express.static(__dirname + '/static_content')); // serve static files
+        self._app.use('/bower', express.static(__dirname + '/bower_components')); // serve bower packages
         BootStrap.loadRoutingTable(self._app); // Load routers
 
         // Express error handler. Give the current context to our error handler so that it can

@@ -1,0 +1,22 @@
+{
+  "name": "zeus",
+  "main": "zeus.js",
+  "version": "0.0.1",
+  "description": "public facing web server",
+  "authors": [
+    "Ashwin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.5",
+    "jquery": "~2.1.4",
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}

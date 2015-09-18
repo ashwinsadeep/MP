@@ -1,5 +1,7 @@
 {
   "app_name": "zeus",
   "app_display_name": "Zeus",
-  "log_directory": "/vagrant/log/zeus"
+  "log_directory": "/vagrant/log/zeus",
+  "port": 1441,
+  "max_connections": 100
 }

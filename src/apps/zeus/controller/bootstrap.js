@@ -8,8 +8,8 @@
     var enrouten = require('express-enrouten');
     var ViewJson = require('../views/json/jsonview');
 
-    var SUPPORTED_VERSIONS = '/v[4|5|6]';
-    var PUBLIC_PREFIX = '/a';
+    var SUPPORTED_VERSIONS = '/v1';
+    var PUBLIC_PREFIX = '/api';
 
     var BootStrap = function () {
     };
