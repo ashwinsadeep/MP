@@ -1,3 +1,5 @@
-var InternalError = require('../../common_modules/custom_errors').InternalError;
-var err = new InternalError('as');
-console.log(require('../../common_modules/custom_errors').isCustomError(err));
+var Yahoo = require('../../common_modules/yahooapi');
+var yahoo = new Yahoo();
+yahoo.getHistoricData('ITC.BO', function (err, data) {
+    console.log(data.getDisplayData());
+});

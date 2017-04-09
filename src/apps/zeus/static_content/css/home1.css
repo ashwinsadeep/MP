@@ -1,0 +1,74 @@
+@import url("../../bower_components/react-select.min.css")  ;
+body{
+    /*background-color: #323234;*/
+}
+*{
+    color: #222222;
+}
+input{
+    margin: 0em;
+    max-width: 100%;
+    flex: 1 0 auto;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    text-align: left;
+    line-height: 1.2142em;
+    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    padding: 0.67861429em 1em;
+    background: #ffffff;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    color: rgba(0, 0, 0, 0.87);
+    border-radius: 0.28571429rem;
+    transition: box-shadow 0.1s ease, border-color 0.1s ease;
+    box-shadow: none;
+}
+input:focus{
+    border-color: #85b7d9;
+    background: #ffffff;
+    color: rgba(0, 0, 0, 0.8);
+    box-shadow: none;
+}
+.full-height{
+    height: 100vh;
+}
+.col-centered{
+    margin: 0 auto;
+    float: none;
+}
+.suggestions-container{
+    max-height: 235px;
+    overflow: auto;
+    position: absolute;
+    z-index: 9;
+    width: 100%;
+}
+.suggestion{
+    cursor: pointer;
+}
+.suggestion:hover, .suggestion:focus, .suggestion-focussed{
+    color: #ffffff;
+    background-color: #85b7d9;
+}
+.search-container{
+    position: relative;
+}
+.search-input{
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.suggestions .exchange-name{
+    font-stretch: extra-condensed;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.suggestions .stock-type{
+    font-weight: 300;
+}
+.suggestions .stock-name{
+    font-stretch: ultra-expanded;
+}
+#historic-data-container{
+    width: 50%;
+}

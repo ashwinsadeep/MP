@@ -57,7 +57,7 @@ var Home = function () {
 
     var renderIntraDayForm = function (data) {
         var title = data.company_name + '(' + data.exchange_name + ')' + ' Intraday Stock Price';
-        data = data.series.map(function (unitObj) {
+        data      = data.series.map(function (unitObj) {
             return {x: unitObj.ts * 1000, y: unitObj.close};
         });
         renderChart(data, title, $('#intraday-data-container'));
@@ -65,7 +65,7 @@ var Home = function () {
 
     var renderHistoricalChart = function (data) {
         var title = data.company_name + '(' + data.exchange_name + ')' + ' Historic Stock Price';
-        data = data.series.map(function (unitObj) {
+        data      = data.series.map(function (unitObj) {
             return {x: unitObj.ts * 1000, y: unitObj.close};
         });
         renderChart(data, title, $('#historic-data-container'));
@@ -75,20 +75,20 @@ var Home = function () {
         container.highcharts(
             'StockChart',
             {
-                rangeSelector: {
-                    selected: 1
-                },
                 credits      : {
                     enabled: false
                 },
                 title        : {
                     text: title
                 },
-
-                series: [{
+                rangeSelector: {
+                    inputEnabled: false,
+                    selected    : 1
+                },
+                series       : [{
                     name     : title,
                     data     : data,
-                    type     : 'areaspline',
+                    type     : 'spline',
                     threshold: null,
                     tooltip  : {
                         valueDecimals: 2

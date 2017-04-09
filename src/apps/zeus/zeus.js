@@ -5,19 +5,20 @@
 (function (module) {
     'use strict';
 
-    var http = require('http');
-    var fs = require('fs');
-    var cluster = require('cluster');
-    var express = require('express');
-    var morgan = require('morgan');
+    var http                    = require('http');
+    var fs                      = require('fs');
+    var cluster                 = require('cluster');
+    var express                 = require('express');
+    var morgan                  = require('morgan');
     var expressDomainMiddleware = require('express-domain-middleware');
-    var BootStrap = require('./controller/bootstrap');
-    var JsonView = require('./views/json/jsonview');
-    var bodyParser = require('body-parser');
-    var config = require('../../config/zeus.json');
-    var CustomError = require('../../common_modules/custom_errors');
+    var BootStrap               = require('./controller/bootstrap');
+    var JsonView                = require('./views/json/jsonview');
+    var bodyParser              = require('body-parser');
+    var config                  = require('../../config/zeus.json');
+    var CustomError             = require('../../common_modules/custom_errors');
+    var Logger                  = require('../../common_modules/common/logger');
 
-    var PORT = config.port;
+    var PORT            = config.port;
     var MAX_CONNECTIONS = config.max_connections;
 
     /**
@@ -26,11 +27,11 @@
      * @constructor
      */
     var Zeus = function () {
-        var self = this;
+        var self  = this;
         self._app = express();
 
         // Setup access logging
-        var accessLogPath = config.log_directory + '/' + config.app_name + '_access.log';
+        var accessLogPath   = config.log_directory + '/' + config.app_name + '_access.log';
         var accessLogStream = fs.createWriteStream(accessLogPath, {flags: 'a'});
         self._app.use(morgan(self._getAccessLogFormat(), {stream: accessLogStream}));
 
@@ -43,7 +44,7 @@
         self._app.use(bodyParser.urlencoded({extended: true})); // read url encoded form data
 
         self._app.use('/static', express.static(__dirname + '/static_content')); // serve static files
-        self._app.use('/bower', express.static(__dirname + '/bower_components')); // serve bower packages
+        self._app.use('/bower_components', express.static(__dirname + '/bower_components')); // serve bower packages
         BootStrap.loadRoutingTable(self._app); // Load routers
 
         // Express error handler. Give the current context to our error handler so that it can
@@ -59,10 +60,10 @@
      */
     Zeus.prototype.start = function () {
         try {
-            this._server = this._app.listen(PORT);
+            this._server                = this._app.listen(PORT);
             this._server.maxConnections = MAX_CONNECTIONS;
         } catch (e) {
-            Logger.message('Something went wrong while starting app').setErrorInfo(e).critical();
+            Logger.factory().info(e);
         }
     };
 
@@ -79,20 +80,21 @@
      * @param req the request which triggered the error
      * @param res response object
      * @param next next middleware in stack
-     * @param self reference to our app (context will be lost if this is triggered from outside current call stack boundary)
+     * @param self reference to our app (context will be lost if this is triggered from outside current call stack
+     *     boundary)
      */
     Zeus.prototype.onError = function (err, req, res, next, self) {
-        var msg = err.message;
+        var msg      = err.message;
         var httpCode = 500;
         if (CustomError.isCustomError(err)) {
             msg = err.getMessage();
             // If not internal error, send http code as 200
-            if (!(err instanceof CMErrors.InternalError)) {
+            if (!(err instanceof CustomError.InternalError)) {
                 httpCode = 200;
             }
         }
 
-        console.log(msg);
+        Logger.factory().info(err);
         try {
             res.status(httpCode).send(JsonView.factory().setError(err).render());
         } catch (e) {
@@ -116,7 +118,12 @@
             process.exit(1);
         });
         // Disconnect from master. This will trigger an event in master.
-        cluster.worker.disconnect();
+        try {
+            cluster.worker.disconnect();
+        } catch (e) {
+            process.exit(1);
+        }
+
     };
 
     /**
